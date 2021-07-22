@@ -279,11 +279,10 @@ open class EasyTipView: UIView {
         }
         
         public struct Highlighting {
-            public var showsOverlay             = false
-            public var overlayColor             = UIColor.black.withAlphaComponent(0.7)
-            public var circleColor: UIColor?    = nil
-            public var circleMargin             = CGFloat(4)
-            public var circleRadius: CGFloat?   = nil
+            public var showsOverlay         = false
+            public var overlayColor         = UIColor.black.withAlphaComponent(0.7)
+            public var overlayShape         = Shape.rect(rectMargin: 0)
+          
         }
         
         public var drawing      = Drawing()
@@ -347,10 +346,9 @@ open class EasyTipView: UIView {
     fileprivate lazy var overlay: TipViewHighlightingBackground = {
         let background = TipViewHighlightingBackground(frame: UIScreen.main.bounds)
         background.backgroundColor = preferences.highlighting.overlayColor
-        background.highlightingBackground = preferences.highlighting.circleColor
         background.alpha = 0
-        background.circleRadius = preferences.highlighting.circleRadius
-        background.circleMargin = preferences.highlighting.circleMargin
+      print(preferences.highlighting.overlayShape)
+        background.shape = preferences.highlighting.overlayShape
         background.tapAction = { [weak self] in self?.handleTap() }
         return background
     }()
