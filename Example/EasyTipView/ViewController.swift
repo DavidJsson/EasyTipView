@@ -41,13 +41,6 @@ class ViewController: UIViewController, EasyTipViewDelegate {
     
     self.configureUI()
     
-    var preferences = EasyTipView.Preferences()
-    
-    preferences.drawing.font = UIFont(name: "Futura-Medium", size: 13)!
-    preferences.drawing.foregroundColor = UIColor.white
-    preferences.drawing.backgroundColor = UIColor(hue:0.46, saturation:0.99, brightness:0.6, alpha:1)
-    
-    EasyTipView.globalPreferences = preferences
     self.view.backgroundColor = UIColor(hue:0.75, saturation:0.01, brightness:0.96, alpha:1.00)
   }
   
@@ -67,15 +60,15 @@ class ViewController: UIViewController, EasyTipViewDelegate {
   @IBAction func barButtonAction(sender: UIBarButtonItem) {
     let text = "Tip view for bar button item displayed within the navigation controller's view. Tap to dismiss."
     EasyTipView.show(forItem: self.navBarItem,
-        withinSuperview: self.navigationController?.view,
-        text: text,
-        delegate : self)
+                     withinSuperview: self.navigationController?.view,
+                     text: text,
+                     delegate : self)
   }
   
   @IBAction func toolbarItemAction() {
     if let tipView = tipView {
       tipView.dismiss(withCompletion: {
-          print("Completion called!")
+        print("Completion called!")
       })
     } else {
       let text = "EasyTipView is an easy to use tooltip view. It can point to any UIView or UIBarItem subclasses. Tap the buttons to see other tooltips."
@@ -93,73 +86,53 @@ class ViewController: UIViewController, EasyTipViewDelegate {
   
   @IBAction func buttonAction(sender : UIButton) {
     switch sender {
-      case buttonA:
-          
-        var preferences = EasyTipView.Preferences()
-
-        preferences.drawing.backgroundColor = UIColor(hue:0.58, saturation:0.1, brightness:1, alpha:1)
-        preferences.drawing.foregroundColor = UIColor.darkGray
-        preferences.drawing.textAlignment = NSTextAlignment.center
-        
-        preferences.animating.dismissTransform = CGAffineTransform(translationX: 100, y: 0)
-        preferences.animating.showInitialTransform = CGAffineTransform(translationX: -100, y: 0)
-        preferences.animating.showInitialAlpha = 0
-        preferences.animating.showDuration = 1
-        preferences.animating.dismissDuration = 1
-        
-        let view = EasyTipView(text: "Tip view within the green superview. Tap to dismiss.", preferences: preferences)
-        
-        let gradient = CAGradientLayer()
-        gradient.frame = view.bounds
-        gradient.colors = [UIColor.white.cgColor, UIColor.black.cgColor]
-        view.show(forView: buttonA, withinSuperview: self.smallContainerView)
-        view.layer.insertSublayer(gradient, at: 0)
-          
-      case buttonB:
-          
-        var preferences = EasyTipView.globalPreferences
-        preferences.drawing.foregroundColor = UIColor.white
-        preferences.drawing.font = UIFont(name: "HelveticaNeue-Light", size: 14)!
-        preferences.drawing.textAlignment = NSTextAlignment.justified
-        
-        preferences.animating.dismissTransform = CGAffineTransform(translationX: 0, y: -15)
-        preferences.animating.showInitialTransform = CGAffineTransform(translationX: 0, y: 15)
-        preferences.animating.showInitialAlpha = 0
-        preferences.animating.showDuration = 1
-        preferences.animating.dismissDuration = 1
-        preferences.drawing.arrowPosition = .top
-        
-        let text = "Tip view inside the navigation controller's view. Tap to dismiss!"
-        EasyTipView.show(forView: self.buttonB,
-            withinSuperview: self.navigationController?.view,
-            text: text,
-            preferences: preferences)
-
-
-
-      default:
-
-        var preferences = EasyTipView.Preferences()
-        preferences.drawing.backgroundColor = buttonH.backgroundColor!
-        preferences.drawing.foregroundColor = UIColor.white
-        preferences.drawing.textAlignment = NSTextAlignment.center
-        
-        preferences.drawing.arrowPosition = .top
-        preferences.animating.showInitialAlpha = 0
-        preferences.animating.showDuration = 0.7
-        preferences.animating.dismissDuration = 0.7
-        preferences.animating.dismissOnTap = true
-        
-        preferences.positioning.maxWidth = 150
-        preferences.positioning.bubbleInsets = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 4)
-        
-        preferences.highlighting.showsOverlay = true
-        
-        let view = EasyTipView(text: "Tip view with highlighting overlay", preferences: preferences)
-        view.show(forView: buttonH, withinSuperview: self.navigationController?.view!)
+    case buttonA:
+      
+      var preferences = EasyTipView.Preferences()
+      
+      preferences.drawing.backgroundColor = UIColor(hue:0.58, saturation:0.1, brightness:1, alpha:1)
+      preferences.drawing.foregroundColor = UIColor.darkGray
+      preferences.drawing.textAlignment = NSTextAlignment.center
+      preferences.highlighting.showsOverlay = true
+      preferences.highlighting.overlayShape = Shape.circle()
+      
+      let view = EasyTipView(text: "Tip view within the green superview. Tap to dismiss.", preferences: preferences)
+      view.show(forView: buttonA)
+      
+    case buttonB:
+      
+      var preferences = EasyTipView.Preferences()
+      preferences.drawing.foregroundColor = UIColor.white
+      preferences.drawing.font = UIFont(name: "HelveticaNeue-Light", size: 14)!
+      preferences.drawing.textAlignment = NSTextAlignment.justified
+      preferences.drawing.arrowPosition = .top
+      preferences.highlighting.showsOverlay = true
+      
+      let text = "Tip view inside the navigation controller's view. Tap to dismiss!"
+      EasyTipView.show(forView: self.buttonB,
+                       withinSuperview: self.navigationController?.view,
+                       text: text,
+                       preferences: preferences)
+      
+      
+      
+    default:
+      
+      var preferences = EasyTipView.Preferences()
+      preferences.drawing.backgroundColor = buttonH.backgroundColor!
+      preferences.drawing.foregroundColor = UIColor.white
+      preferences.drawing.textAlignment = NSTextAlignment.center
+      preferences.drawing.arrowPosition = .top
+      preferences.positioning.maxWidth = 150
+      preferences.positioning.bubbleInsets = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 4)
+      preferences.highlighting.showsOverlay = true
+      preferences.highlighting.overlayShape = Shape.rect(rectMargin: 4)
+      
+      let view = EasyTipView(text: "Tip view with highlighting overlay", preferences: preferences)
+      view.show(forView: buttonH, withinSuperview: self.navigationController?.view!)
     }
   }
-    
+  
   func configureUI () {
     let color = UIColor(hue:0.46, saturation:0.99, brightness:0.6, alpha:1)
     

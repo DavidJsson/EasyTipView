@@ -9,7 +9,7 @@
 import UIKit
 
 final class TipViewHighlightingBackground: UIView {
-    
+  
   // MARK: - Public interface
   
   /// The view around which the highlighting will be shown
@@ -17,12 +17,12 @@ final class TipViewHighlightingBackground: UIView {
   
   /// A closure to execute when the view is tapped
   var tapAction: (() -> Void)?
-
+  
   var shape: Shape?
-
+  
   private var overlayShape: OverlayShape?
-    
-    
+  
+  
   // MARK: - Initialization
   
   public override init(frame: CGRect) {
@@ -41,12 +41,12 @@ final class TipViewHighlightingBackground: UIView {
     addGestureRecognizer(tapGesture)
   }
   
-    
+  
   // MARK: - User input
   @objc private func handleTap() {
     tapAction?()
   }
-    
+  
   // MARK: - Drawing and layout
   
   public override func draw(_ rect: CGRect) {
@@ -64,7 +64,7 @@ final class TipViewHighlightingBackground: UIView {
     default:
       overlayShape = OverlayRect()
     }
-
+    
     
     // add a mask with a cicle hole in the position of the viewToHighlight
     let mask = CAShapeLayer()
@@ -76,7 +76,7 @@ final class TipViewHighlightingBackground: UIView {
     mask.path = path
     mask.fillRule = .evenOdd
     self.layer.mask = mask
-      
-  }
     
+  }
+  
 }

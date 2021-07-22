@@ -16,7 +16,7 @@ protocol OverlayShape {
   var path: CGMutablePath { get }
   
   func addShape(viewFrame: CGRect)
-
+  
 }
 
 class OverlayRect: OverlayShape {
@@ -64,7 +64,7 @@ class OverlayCircle: OverlayShape {
     let height = viewFrame.height / 2
     let distanceToEdge = ((width * width) + (height * height)).squareRoot()
     let radius = circleRadius ?? distanceToEdge + circleMargin
-
+    
     path.addArc(center: viewFrame.center,
                 radius: radius,
                 startAngle: 0,

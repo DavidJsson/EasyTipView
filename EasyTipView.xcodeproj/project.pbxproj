@@ -13,6 +13,7 @@
 		3DEF6DAB23A39E4F007B8C3C /* EasyTipView.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DEF6DA823A39E4F007B8C3C /* EasyTipView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3DEF6DAC23A39E4F007B8C3C /* UIKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEF6DA923A39E4F007B8C3C /* UIKitExtensions.swift */; };
 		3DEF6DAD23A39E4F007B8C3C /* EasyTipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEF6DAA23A39E4F007B8C3C /* EasyTipView.swift */; };
+		DF684BD226A99DC200930E08 /* OverlayShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF684BD126A99DC200930E08 /* OverlayShape.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +36,7 @@
 		3DEF6DA823A39E4F007B8C3C /* EasyTipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyTipView.h; sourceTree = "<group>"; };
 		3DEF6DA923A39E4F007B8C3C /* UIKitExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitExtensions.swift; sourceTree = "<group>"; };
 		3DEF6DAA23A39E4F007B8C3C /* EasyTipView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EasyTipView.swift; sourceTree = "<group>"; };
+		DF684BD126A99DC200930E08 /* OverlayShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverlayShape.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 		3DEF6DA623A39E20007B8C3C /* EasyTipView */ = {
 			isa = PBXGroup;
 			children = (
+				DF684BD126A99DC200930E08 /* OverlayShape.swift */,
 				3DEF6DA823A39E4F007B8C3C /* EasyTipView.h */,
 				3DEF6DAA23A39E4F007B8C3C /* EasyTipView.swift */,
 				3DEF6DA923A39E4F007B8C3C /* UIKitExtensions.swift */,
@@ -223,6 +226,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DF684BD226A99DC200930E08 /* OverlayShape.swift in Sources */,
 				3D0E3EA525FA2CC600899BB7 /* TipViewHighlightingBackground.swift in Sources */,
 				3DEF6DAD23A39E4F007B8C3C /* EasyTipView.swift in Sources */,
 				3DEF6DAC23A39E4F007B8C3C /* UIKitExtensions.swift in Sources */,

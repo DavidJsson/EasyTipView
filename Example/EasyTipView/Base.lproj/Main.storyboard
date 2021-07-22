@@ -99,11 +99,11 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gfZ-et-If5" userLabel="ButtonH">
-                                <rect key="frame" x="329" y="110" width="30" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gfZ-et-If5" userLabel="ButtonH">
+                                <rect key="frame" x="22" y="110" width="337" height="30"/>
                                 <color key="backgroundColor" red="0.21176470588235294" green="0.64313725490196072" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="30" id="3lf-zS-2SH"/>
+                                    <constraint firstAttribute="width" constant="300" id="3lf-zS-2SH"/>
                                     <constraint firstAttribute="height" constant="30" id="78G-IW-7yF"/>
                                 </constraints>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
