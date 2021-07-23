@@ -21,7 +21,14 @@ final class TipViewHighlightingBackground: UIView {
   var shape: Shape?
   
   private var overlayShape: OverlayShape?
+    
+  var tapOverlayToDismiss: (() -> Void)?
+    
+  var shouldDismissOnOverlayTap: Bool = false
   
+  var withinSuperview: UIView?
+  
+  var shouldPassEventToHighlightView: Bool = true
   
   // MARK: - Initialization
   
@@ -79,4 +86,11 @@ final class TipViewHighlightingBackground: UIView {
     
   }
   
+  override public func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    let view = super.hitTest(point, with: event)
+    guard shouldPassEventToHighlightView else { return view }
+    let containsPoint = withinSuperview?.convert(viewToHighlight!.frame, from: viewToHighlight?.superview).contains(point)
+    
+    return view != self || containsPoint ?? false ? nil : view
+  }
 }
