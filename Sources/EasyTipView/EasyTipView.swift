@@ -165,6 +165,7 @@ public extension EasyTipView {
     
     if preferences.highlighting.showsOverlay {
       overlay.viewToHighlight = view
+      overlay.withinSuperview = superview
       superview.addSubview(overlay)
     }
     
@@ -292,6 +293,8 @@ open class EasyTipView: UIView {
       public var showsOverlay         = false
       public var overlayColor         = UIColor.black.withAlphaComponent(0.7)
       public var overlayShape         = Shape.rect(rectMargin: 0)
+      public var shouldDismissOnOverlayTap = false
+      public var shouldPassEventToHighlightView = true
       
     }
     
@@ -359,6 +362,7 @@ open class EasyTipView: UIView {
     background.alpha = 0
     background.shape = preferences.highlighting.overlayShape
     background.tapAction = { [weak self] in self?.handleTap() }
+    background.shouldPassEventToHighlightView = preferences.highlighting.shouldPassEventToHighlightView
     return background
   }()
   
@@ -594,7 +598,8 @@ open class EasyTipView: UIView {
   
   @objc func handleTap() {
     self.delegate?.easyTipViewDidTap(self)
-    guard preferences.animating.dismissOnTap else { return }
+    guard preferences.animating.dismissOnTap || preferences.highlighting.shouldDismissOnOverlayTap else { return }
+    
     dismiss()
   }
   

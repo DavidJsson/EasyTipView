@@ -138,6 +138,10 @@ class ViewController: UIViewController, EasyTipViewDelegate {
       preferences.positioning.bubbleInsets = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 4)
       preferences.highlighting.showsOverlay = true
       preferences.highlighting.overlayShape = .rect(rectMargin: 4)
+      preferences.animating.dismissOnTap = false
+      
+      preferences.highlighting.shouldPassEventToHighlightView = true
+      preferences.highlighting.shouldDismissOnOverlayTap = false
       
       let view = EasyTipView(text: "Tip view with highlighting overlay", preferences: preferences)
       view.show(forView: buttonH, withinSuperview: self.navigationController?.view!)
