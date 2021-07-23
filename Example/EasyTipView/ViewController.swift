@@ -90,11 +90,22 @@ class ViewController: UIViewController, EasyTipViewDelegate {
       
       var preferences = EasyTipView.Preferences()
       
-      preferences.drawing.backgroundColor = UIColor(hue:0.58, saturation:0.1, brightness:1, alpha:1)
+      let colors = [UIColor.red.cgColor, UIColor.yellow.cgColor]
+      let colorSpace = CGColorSpaceCreateDeviceRGB()
+      let colorLocations: [CGFloat] = [0.0, 1.0]
+      guard let gradient = CGGradient(
+        colorsSpace: colorSpace,
+        colors: colors as CFArray,
+        locations: colorLocations
+      ) else {
+        return
+      }
+      
+      preferences.drawing.backgroundColor = .gradient(gradient: gradient, direction: .leftRight)
       preferences.drawing.foregroundColor = UIColor.darkGray
       preferences.drawing.textAlignment = NSTextAlignment.center
       preferences.highlighting.showsOverlay = true
-      preferences.highlighting.overlayShape = Shape.circle()
+      preferences.highlighting.overlayShape = .circle()
       
       let view = EasyTipView(text: "Tip view within the green superview. Tap to dismiss.", preferences: preferences)
       view.show(forView: buttonA)
@@ -102,9 +113,9 @@ class ViewController: UIViewController, EasyTipViewDelegate {
     case buttonB:
       
       var preferences = EasyTipView.Preferences()
-      preferences.drawing.foregroundColor = UIColor.white
+      preferences.drawing.foregroundColor = .white
       preferences.drawing.font = UIFont(name: "HelveticaNeue-Light", size: 14)!
-      preferences.drawing.textAlignment = NSTextAlignment.justified
+      preferences.drawing.textAlignment = .justified
       preferences.drawing.arrowPosition = .top
       preferences.highlighting.showsOverlay = true
       
@@ -119,14 +130,14 @@ class ViewController: UIViewController, EasyTipViewDelegate {
     default:
       
       var preferences = EasyTipView.Preferences()
-      preferences.drawing.backgroundColor = buttonH.backgroundColor!
-      preferences.drawing.foregroundColor = UIColor.white
-      preferences.drawing.textAlignment = NSTextAlignment.center
+      preferences.drawing.backgroundColor = .solid(buttonH.backgroundColor!)
+      preferences.drawing.foregroundColor = .white
+      preferences.drawing.textAlignment = .center
       preferences.drawing.arrowPosition = .top
       preferences.positioning.maxWidth = 150
       preferences.positioning.bubbleInsets = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 4)
       preferences.highlighting.showsOverlay = true
-      preferences.highlighting.overlayShape = Shape.rect(rectMargin: 4)
+      preferences.highlighting.overlayShape = .rect(rectMargin: 4)
       
       let view = EasyTipView(text: "Tip view with highlighting overlay", preferences: preferences)
       view.show(forView: buttonH, withinSuperview: self.navigationController?.view!)

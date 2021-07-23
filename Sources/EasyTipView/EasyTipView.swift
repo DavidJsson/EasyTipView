@@ -240,6 +240,16 @@ open class EasyTipView: UIView {
     static let allValues = [top, bottom, right, left]
   }
   
+  public enum BackgroundColor {
+    case gradient(gradient: CGGradient, direction: GradientDirection)
+    case solid(_ color: UIColor)
+  }
+  
+  public enum GradientDirection {
+    case leftRight
+    case topBottom
+  }
+  
   public struct Preferences {
     
     public struct Drawing {
@@ -247,7 +257,7 @@ open class EasyTipView: UIView {
       public var arrowHeight         = CGFloat(5)
       public var arrowWidth          = CGFloat(10)
       public var foregroundColor     = UIColor.white
-      public var backgroundColor     = UIColor.red
+      public var backgroundColor     = BackgroundColor.solid(UIColor.red)
       public var arrowPosition       = ArrowPosition.any
       public var textAlignment       = NSTextAlignment.center
       public var borderWidth         = CGFloat(0)
@@ -326,7 +336,7 @@ open class EasyTipView: UIView {
       guard let color = backgroundColor
             , color != UIColor.clear else {return}
       
-      preferences.drawing.backgroundColor = color
+      preferences.drawing.backgroundColor = .solid(color)
       backgroundColor = UIColor.clear
     }
   }
@@ -669,8 +679,31 @@ open class EasyTipView: UIView {
   }
   
   fileprivate func paintBubble(_ context: CGContext) {
-    context.setFillColor(preferences.drawing.backgroundColor.cgColor)
-    context.fill(bounds)
+    
+    switch preferences.drawing.backgroundColor {
+    case .solid(let color):
+      context.setFillColor(color.cgColor)
+      context.fill(bounds)
+      
+    case .gradient(let gradient, let direction):
+      let startPoint: CGPoint
+      let endPoint: CGPoint
+      switch direction {
+      case .leftRight:
+        startPoint = CGPoint(x: 0, y: bounds.height)
+        endPoint = CGPoint(x: bounds.width, y: bounds.height)
+      default:
+        startPoint = CGPoint.zero
+        endPoint = CGPoint(x: 0, y: bounds.height)
+      }
+      context.drawLinearGradient(
+              gradient,
+              start: startPoint,
+              end: endPoint,
+              options: []
+          )
+    }
+    
   }
   
   fileprivate func drawBorder(_ borderPath: CGPath, context: CGContext) {
