@@ -268,11 +268,13 @@ class EasyTipView: UIView {
       var shadowOffset        = CGSize(width: 0.0, height: 0.0)
       var shadowRadius        = CGFloat(0)
       var shadowOpacity       = CGFloat(0)
+      var image: UIImage?      = nil
     }
     
     struct Positioning {
-      var bubbleInsets         = UIEdgeInsets(top: 1.0, left: 1.0, bottom: 1.0, right: 1.0)
+      var bubbleInsets         = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
       var contentInsets        = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
+      var imageSpace           = CGFloat(8)
       var maxWidth             = CGFloat(200)
     }
     
@@ -389,6 +391,9 @@ class EasyTipView: UIView {
       if textSize.width < self.preferences.drawing.arrowWidth {
         textSize.width = self.preferences.drawing.arrowWidth
       }
+      if textSize.height < imageSize.height {
+        textSize.height = imageSize.height
+      }
       
       return textSize
       
@@ -401,6 +406,9 @@ class EasyTipView: UIView {
       if textSize.width < self.preferences.drawing.arrowWidth {
         textSize.width = self.preferences.drawing.arrowWidth
       }
+      if textSize.height < imageSize.height {
+        textSize.height = imageSize.height
+      }
       
       return textSize
       
@@ -409,13 +417,31 @@ class EasyTipView: UIView {
     }
   }()
   
+  fileprivate lazy var imageSize: CGSize = {
+    
+    [unowned self] in
+    
+    if preferences.drawing.image == nil {
+      preferences.positioning.imageSpace = 0
+      return CGSize.zero
+    }
+    
+    var imageSize = CGSize(width: 28, height: 28)
+    
+    imageSize.width = ceil(imageSize.width)
+    imageSize.height = ceil(imageSize.height)
+    
+    return imageSize
+    
+  }()
+  
   fileprivate lazy var tipViewSize: CGSize = {
     
     [unowned self] in
     
     var tipViewSize =
       CGSize(
-        width: self.contentSize.width + self.preferences.positioning.contentInsets.left + self.preferences.positioning.contentInsets.right + self.preferences.positioning.bubbleInsets.left + self.preferences.positioning.bubbleInsets.right,
+        width: self.contentSize.width + self.imageSize.width + self.preferences.positioning.imageSpace + self.preferences.positioning.contentInsets.left + self.preferences.positioning.contentInsets.right + self.preferences.positioning.bubbleInsets.left + self.preferences.positioning.bubbleInsets.right,
         height: self.contentSize.height + self.preferences.positioning.contentInsets.top + self.preferences.positioning.contentInsets.bottom + self.preferences.positioning.bubbleInsets.top + self.preferences.positioning.bubbleInsets.bottom + self.preferences.drawing.arrowHeight)
     
     return tipViewSize
@@ -748,6 +774,13 @@ class EasyTipView: UIView {
     text.draw(with: textRect, options: .usesLineFragmentOrigin, context: .none)
   }
   
+  fileprivate func drawImage(_ bubbleFrame: CGRect, context: CGContext) {
+    if let image = preferences.drawing.image {
+      let imageRect = getImageRect(from: bubbleFrame)
+      image.draw(in: imageRect)
+    }
+  }
+  
   fileprivate func drawShadow() {
     if preferences.hasShadow {
       self.layer.masksToBounds = false
@@ -775,7 +808,7 @@ class EasyTipView: UIView {
     case .view (let view):
       addSubview(view)
     }
-    
+    drawImage(bubbleFrame, context: context)
     drawShadow()
     context.restoreGState()
   }
@@ -808,7 +841,12 @@ class EasyTipView: UIView {
   }
   
   private func getContentRect(from bubbleFrame: CGRect) -> CGRect {
-    return CGRect(x: bubbleFrame.origin.x + preferences.positioning.contentInsets.left, y: bubbleFrame.origin.y + preferences.positioning.contentInsets.top, width: contentSize.width, height: contentSize.height)
+    return CGRect(x: bubbleFrame.origin.x + preferences.positioning.contentInsets.left + imageSize.width + preferences.positioning.imageSpace, y: bubbleFrame.origin.y + preferences.positioning.contentInsets.top, width: contentSize.width, height: contentSize.height)
   }
+  
+  private func getImageRect(from bubbleFrame: CGRect) -> CGRect {
+    return CGRect(x: bubbleFrame.origin.x + preferences.positioning.contentInsets.left, y: bubbleFrame.midY - imageSize.height/2, width: imageSize.width, height: imageSize.height)
+  }
+  
 }
 #endif
