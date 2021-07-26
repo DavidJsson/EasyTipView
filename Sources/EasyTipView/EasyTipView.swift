@@ -273,7 +273,7 @@ class EasyTipView: UIView {
     struct Positioning {
       var bubbleInsets         = UIEdgeInsets(top: 1.0, left: 1.0, bottom: 1.0, right: 1.0)
       var contentInsets        = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
-      var maxWidth             = CGFloat(200)
+      var widthRatio           = CGFloat(0.7)
     }
     
     struct Animating {
@@ -372,7 +372,9 @@ class EasyTipView: UIView {
   fileprivate lazy var contentSize: CGSize = {
     
     [unowned self] in
+    var screenWidth: CGFloat = computeRatioWidth()
     
+    print(screenWidth)
     switch content {
     case .text(let text):
       #if swift(>=4.2)
@@ -381,7 +383,7 @@ class EasyTipView: UIView {
       var attributes = [NSAttributedStringKey.font : self.preferences.drawing.font]
       #endif
       
-      var textSize = text.boundingRect(with: CGSize(width: self.preferences.positioning.maxWidth, height: CGFloat.greatestFiniteMagnitude), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: attributes, context: nil).size
+      var textSize = text.boundingRect(with: CGSize(width: screenWidth, height: CGFloat.greatestFiniteMagnitude), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: attributes, context: nil).size
       
       textSize.width = ceil(textSize.width)
       textSize.height = ceil(textSize.height)
@@ -393,7 +395,7 @@ class EasyTipView: UIView {
       return textSize
       
     case .attributedText(let text):
-      var textSize = text.boundingRect(with: CGSize(width: self.preferences.positioning.maxWidth, height: CGFloat.greatestFiniteMagnitude), options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil).size
+      var textSize = text.boundingRect(with: CGSize(width: screenWidth, height: CGFloat.greatestFiniteMagnitude), options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil).size
       
       textSize.width = ceil(textSize.width)
       textSize.height = ceil(textSize.height)
@@ -488,6 +490,16 @@ class EasyTipView: UIView {
   }
   
   // MARK: - Private methods -
+  
+  fileprivate func computeRatioWidth() -> CGFloat {
+    var ratio: CGFloat
+    switch preferences.positioning.widthRatio {
+    case ...0: ratio = 0.01
+    case 1...: ratio = 0.945
+    default: ratio = preferences.positioning.widthRatio
+    }
+    return UIScreen.main.bounds.width * ratio
+  }
   
   fileprivate func computeFrame(arrowPosition position: ArrowPosition, refViewFrame: CGRect, superviewFrame: CGRect) -> CGRect {
     var xOrigin: CGFloat = 0
