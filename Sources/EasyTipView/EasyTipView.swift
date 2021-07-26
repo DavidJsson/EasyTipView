@@ -228,7 +228,7 @@ public extension EasyTipView {
 // MARK: - EasyTipView class implementation -
 
 open class EasyTipView: UIView {
-  
+
   // MARK:- Nested types -
   
   public enum ArrowPosition {
@@ -361,8 +361,9 @@ open class EasyTipView: UIView {
     background.backgroundColor = preferences.highlighting.overlayColor
     background.alpha = 0
     background.shape = preferences.highlighting.overlayShape
-    background.tapAction = { [weak self] in self?.handleTap() }
+    background.tapAction = { [weak self] in self?.dismiss() }
     background.shouldPassEventToHighlightView = preferences.highlighting.shouldPassEventToHighlightView
+    background.shouldDismissOnOverlayTap = preferences.highlighting.shouldDismissOnOverlayTap
     return background
   }()
   
@@ -598,8 +599,7 @@ open class EasyTipView: UIView {
   
   @objc func handleTap() {
     self.delegate?.easyTipViewDidTap(self)
-    guard preferences.animating.dismissOnTap || preferences.highlighting.shouldDismissOnOverlayTap else { return }
-    
+    guard preferences.animating.dismissOnTap else { return }
     dismiss()
   }
   

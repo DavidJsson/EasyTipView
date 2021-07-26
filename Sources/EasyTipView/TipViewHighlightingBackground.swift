@@ -51,6 +51,7 @@ final class TipViewHighlightingBackground: UIView {
   
   // MARK: - User input
   @objc private func handleTap() {
+    guard self.shouldDismissOnOverlayTap else { return }
     tapAction?()
   }
   
@@ -90,7 +91,6 @@ final class TipViewHighlightingBackground: UIView {
     let view = super.hitTest(point, with: event)
     guard shouldPassEventToHighlightView else { return view }
     let containsPoint = withinSuperview?.convert(viewToHighlight!.frame, from: viewToHighlight?.superview).contains(point)
-    
-    return view != self || containsPoint ?? false ? nil : view
+    return containsPoint ?? false ? nil : view
   }
 }
