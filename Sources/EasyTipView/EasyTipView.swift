@@ -228,15 +228,7 @@ public extension EasyTipView {
 // MARK: - EasyTipView class implementation -
 
 open class EasyTipView: UIView {
-  
-  /*open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-    let view = super.hitTest(point, with: event)
-    //print("EasyTipView")
-    guard preferences.animating.dismissOnTap else { return view }
-    //print(view?.frame == self.frame)
-    return view?.frame == self.frame ? view : nil
-  }*/
-  
+
   // MARK:- Nested types -
   
   public enum ArrowPosition {
