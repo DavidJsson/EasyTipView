@@ -374,7 +374,6 @@ class EasyTipView: UIView {
     [unowned self] in
     var screenWidth: CGFloat = computeRatioWidth()
     
-    print(screenWidth)
     switch content {
     case .text(let text):
       #if swift(>=4.2)
