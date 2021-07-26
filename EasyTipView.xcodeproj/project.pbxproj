@@ -14,6 +14,7 @@
 		3DEF6DAC23A39E4F007B8C3C /* UIKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEF6DA923A39E4F007B8C3C /* UIKitExtensions.swift */; };
 		3DEF6DAD23A39E4F007B8C3C /* EasyTipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEF6DAA23A39E4F007B8C3C /* EasyTipView.swift */; };
 		DF684BD226A99DC200930E08 /* OverlayShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF684BD126A99DC200930E08 /* OverlayShape.swift */; };
+		DF684BDC26AACDB300930E08 /* HighlightFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF684BDB26AACDB300930E08 /* HighlightFeature.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +38,7 @@
 		3DEF6DA923A39E4F007B8C3C /* UIKitExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitExtensions.swift; sourceTree = "<group>"; };
 		3DEF6DAA23A39E4F007B8C3C /* EasyTipView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EasyTipView.swift; sourceTree = "<group>"; };
 		DF684BD126A99DC200930E08 /* OverlayShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverlayShape.swift; sourceTree = "<group>"; };
+		DF684BDB26AACDB300930E08 /* HighlightFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightFeature.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 		1310EC8D1D0C537F0000E71E /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				DF684BD926AACD3A00930E08 /* HighlightFeature */,
 				3DEF6DA623A39E20007B8C3C /* EasyTipView */,
 				13FB32A11D0C53CB001ACE20 /* Info.plist */,
 			);
@@ -112,6 +115,14 @@
 				13FB32A61D0C53E2001ACE20 /* Tests.swift */,
 			);
 			path = EasyTipViewTests;
+			sourceTree = "<group>";
+		};
+		DF684BD926AACD3A00930E08 /* HighlightFeature */ = {
+			isa = PBXGroup;
+			children = (
+				DF684BDB26AACDB300930E08 /* HighlightFeature.swift */,
+			);
+			path = HighlightFeature;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -228,6 +239,7 @@
 			files = (
 				DF684BD226A99DC200930E08 /* OverlayShape.swift in Sources */,
 				3D0E3EA525FA2CC600899BB7 /* TipViewHighlightingBackground.swift in Sources */,
+				DF684BDC26AACDB300930E08 /* HighlightFeature.swift in Sources */,
 				3DEF6DAD23A39E4F007B8C3C /* EasyTipView.swift in Sources */,
 				3DEF6DAC23A39E4F007B8C3C /* UIKitExtensions.swift in Sources */,
 			);

@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  OverlayShape.swift
+//  EasyTipView
 //
 //  Created by David Johansson on 2021-07-22.
 //

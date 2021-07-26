@@ -25,7 +25,7 @@ import UIKit
 import Darwin
 import EasyTipView
 
-class ViewController: UIViewController, EasyTipViewDelegate {
+class ViewController: UIViewController {
   
   @IBOutlet weak var toolbarItem: UIBarButtonItem!
   @IBOutlet weak var smallContainerView: UIView!
@@ -34,8 +34,7 @@ class ViewController: UIViewController, EasyTipViewDelegate {
   @IBOutlet weak var buttonB: UIButton!
   @IBOutlet weak var buttonH: UIButton!
   
-  weak var tipView: EasyTipView?
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -49,46 +48,30 @@ class ViewController: UIViewController, EasyTipViewDelegate {
     self.toolbarItemAction()
   }
   
-  func easyTipViewDidTap(_ tipView: EasyTipView) {
-    print("\(tipView) did tap!")
-  }
-  
-  func easyTipViewDidDismiss(_ tipView: EasyTipView) {
-    print("\(tipView) did dismiss!")
-  }
   
   @IBAction func barButtonAction(sender: UIBarButtonItem) {
     let text = "Tip view for bar button item displayed within the navigation controller's view. Tap to dismiss."
-    EasyTipView.show(forItem: self.navBarItem,
-                     withinSuperview: self.navigationController?.view,
-                     text: text,
-                     delegate : self)
+    var prefs = HighlightFeature.HighlightPreferences()
+    prefs.data.title = text
+    HighlightFeature(preferences: prefs).show(forItem: self.navBarItem)
   }
   
   @IBAction func toolbarItemAction() {
-    if let tipView = tipView {
-      tipView.dismiss(withCompletion: {
-        print("Completion called!")
-      })
-    } else {
-      let text = "EasyTipView is an easy to use tooltip view. It can point to any UIView or UIBarItem subclasses. Tap the buttons to see other tooltips."
       
-      var preferences = EasyTipView.globalPreferences
-      preferences.drawing.shadowColor = UIColor.black
-      preferences.drawing.shadowRadius = 2
-      preferences.drawing.shadowOpacity = 0.75
-      
-      let tip = EasyTipView(text: text, preferences: preferences, delegate: self)
-      tip.show(forItem: toolbarItem)
-      tipView = tip
-    }
+    var preferences = HighlightFeature.HighlightPreferences()
+    let text = "EasyTipView is an easy to use tooltip view. It can point to any UIView or UIBarItem subclasses. Tap the buttons to see other"
+    preferences.data.title = text
+    
+    let tip = HighlightFeature(preferences: preferences)
+    tip.show(forItem: toolbarItem)
+    
   }
   
   @IBAction func buttonAction(sender : UIButton) {
     switch sender {
     case buttonA:
       
-      var preferences = EasyTipView.Preferences()
+      var preferences = HighlightFeature.HighlightPreferences()
       
       let colors = [UIColor.red.cgColor, UIColor.yellow.cgColor]
       let colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -101,50 +84,42 @@ class ViewController: UIViewController, EasyTipViewDelegate {
         return
       }
       
-      preferences.drawing.backgroundColor = .gradient(gradient: gradient, direction: .leftRight)
-      preferences.drawing.foregroundColor = UIColor.darkGray
-      preferences.drawing.textAlignment = NSTextAlignment.center
-      preferences.highlighting.showsOverlay = true
-      preferences.highlighting.overlayShape = .circle()
-      
-      let view = EasyTipView(text: "Tip view within the green superview. Tap to dismiss.", preferences: preferences)
+      preferences.data.backgroundColor = .gradient(gradient: gradient, direction: .leftRight)
+      preferences.data.textColor = UIColor.darkGray
+      preferences.overlay.overlayIsVisible = true
+      preferences.overlay.overlayShape = .circle()
+      preferences.data.title = "Tip view within the green superview. Tap to dismiss."
+      let view = HighlightFeature(preferences: preferences)
       view.show(forView: buttonA)
       
     case buttonB:
       
-      var preferences = EasyTipView.Preferences()
-      preferences.drawing.foregroundColor = .white
-      preferences.drawing.font = UIFont(name: "HelveticaNeue-Light", size: 14)!
-      preferences.drawing.textAlignment = .justified
-      preferences.drawing.arrowPosition = .top
-      preferences.highlighting.showsOverlay = true
+      var preferences = HighlightFeature.HighlightPreferences()
+      preferences.data.textColor = .white
+      preferences.data.position = .top
+      preferences.overlay.overlayIsVisible = true
       
       let text = "Tip view inside the navigation controller's view. Tap to dismiss!"
-      EasyTipView.show(forView: self.buttonB,
-                       withinSuperview: self.navigationController?.view,
-                       text: text,
-                       preferences: preferences)
-      
-      
+      preferences.data.title = text
+      HighlightFeature(preferences: preferences).show(forView: self.buttonB)
       
     default:
       
-      var preferences = EasyTipView.Preferences()
-      preferences.drawing.backgroundColor = .solid(buttonH.backgroundColor!)
-      preferences.drawing.foregroundColor = .white
-      preferences.drawing.textAlignment = .center
-      preferences.drawing.arrowPosition = .top
-      preferences.positioning.maxWidth = 150
-      preferences.positioning.bubbleInsets = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 4)
-      preferences.highlighting.showsOverlay = true
-      preferences.highlighting.overlayShape = .rect(rectMargin: 4)
-      preferences.animating.dismissOnTap = false
+      var preferences = HighlightFeature.HighlightPreferences()
+      preferences.data.backgroundColor = .solid(buttonH.backgroundColor!)
+      preferences.data.textColor = .white
+      preferences.data.position = .top
+      //preferences.positioning.bubbleInsets = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 4)
+      preferences.overlay.overlayIsVisible = true
+      preferences.overlay.overlayShape = .rect(rectMargin: 4)
+      preferences.data.shouldDismissOnDialogTap = true
       
-      preferences.highlighting.shouldPassEventToHighlightView = true
-      preferences.highlighting.shouldDismissOnOverlayTap = false
+      preferences.overlay.shouldPassEventToHighlightView = true
+      preferences.overlay.shouldDismissOnOverlayTap = false
+      preferences.data.title = "Tip view with highlighting overlay"
+      let view = HighlightFeature(preferences: preferences)
+      view.show(forView: buttonH)
       
-      let view = EasyTipView(text: "Tip view with highlighting overlay", preferences: preferences)
-      view.show(forView: buttonH, withinSuperview: self.navigationController?.view!)
     }
   }
   

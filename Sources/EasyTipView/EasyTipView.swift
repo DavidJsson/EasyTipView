@@ -24,15 +24,15 @@
 #if canImport(UIKit)
 import UIKit
 
-public protocol EasyTipViewDelegate : AnyObject {
+protocol EasyTipViewDelegate : AnyObject {
   func easyTipViewDidTap(_ tipView: EasyTipView)
   func easyTipViewDidDismiss(_ tipView : EasyTipView)
 }
 
 
-// MARK: - Public methods extension
+// MARK: - Internal methods extension
 
-public extension EasyTipView {
+extension EasyTipView {
   
   // MARK:- Class methods -
   
@@ -227,11 +227,11 @@ public extension EasyTipView {
 
 // MARK: - EasyTipView class implementation -
 
-open class EasyTipView: UIView {
+class EasyTipView: UIView {
 
   // MARK:- Nested types -
   
-  public enum ArrowPosition {
+  enum ArrowPosition {
     case any
     case top
     case bottom
@@ -241,85 +241,85 @@ open class EasyTipView: UIView {
     static let allValues = [top, bottom, right, left]
   }
   
-  public enum BackgroundColor {
+  enum BackgroundColor {
     case gradient(gradient: CGGradient, direction: GradientDirection)
     case solid(_ color: UIColor)
   }
   
-  public enum GradientDirection {
+  enum GradientDirection {
     case leftRight
     case topBottom
   }
   
-  public struct Preferences {
+  struct Preferences {
     
-    public struct Drawing {
-      public var cornerRadius        = CGFloat(5)
-      public var arrowHeight         = CGFloat(5)
-      public var arrowWidth          = CGFloat(10)
-      public var foregroundColor     = UIColor.white
-      public var backgroundColor     = BackgroundColor.solid(UIColor.red)
-      public var arrowPosition       = ArrowPosition.any
-      public var textAlignment       = NSTextAlignment.center
-      public var borderWidth         = CGFloat(0)
-      public var borderColor         = UIColor.clear
-      public var font                = UIFont.systemFont(ofSize: 15)
-      public var shadowColor         = UIColor.clear
-      public var shadowOffset        = CGSize(width: 0.0, height: 0.0)
-      public var shadowRadius        = CGFloat(0)
-      public var shadowOpacity       = CGFloat(0)
+    struct Drawing {
+      var cornerRadius        = CGFloat(5)
+      var arrowHeight         = CGFloat(5)
+      var arrowWidth          = CGFloat(10)
+      var foregroundColor     = UIColor.white
+      var backgroundColor     = BackgroundColor.solid(UIColor.red)
+      var arrowPosition       = ArrowPosition.any
+      var textAlignment       = NSTextAlignment.center
+      var borderWidth         = CGFloat(0)
+      var borderColor         = UIColor.clear
+      var font                = UIFont.systemFont(ofSize: 15)
+      var shadowColor         = UIColor.clear
+      var shadowOffset        = CGSize(width: 0.0, height: 0.0)
+      var shadowRadius        = CGFloat(0)
+      var shadowOpacity       = CGFloat(0)
     }
     
-    public struct Positioning {
-      public var bubbleInsets         = UIEdgeInsets(top: 1.0, left: 1.0, bottom: 1.0, right: 1.0)
-      public var contentInsets        = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
-      public var maxWidth             = CGFloat(200)
+    struct Positioning {
+      var bubbleInsets         = UIEdgeInsets(top: 1.0, left: 1.0, bottom: 1.0, right: 1.0)
+      var contentInsets        = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
+      var maxWidth             = CGFloat(200)
     }
     
-    public struct Animating {
-      public var dismissTransform     = CGAffineTransform(scaleX: 0.1, y: 0.1)
-      public var showInitialTransform = CGAffineTransform(scaleX: 0, y: 0)
-      public var showFinalTransform   = CGAffineTransform.identity
-      public var springDamping        = CGFloat(0.7)
-      public var springVelocity       = CGFloat(0.7)
-      public var showInitialAlpha     = CGFloat(0)
-      public var dismissFinalAlpha    = CGFloat(0)
-      public var showDuration         = 0.7
-      public var dismissDuration      = 0.7
-      public var dismissOnTap         = true
+    struct Animating {
+      var dismissTransform     = CGAffineTransform(scaleX: 0.1, y: 0.1)
+      var showInitialTransform = CGAffineTransform(scaleX: 0, y: 0)
+      var showFinalTransform   = CGAffineTransform.identity
+      var springDamping        = CGFloat(0.7)
+      var springVelocity       = CGFloat(0.7)
+      var showInitialAlpha     = CGFloat(0)
+      var dismissFinalAlpha    = CGFloat(0)
+      var showDuration         = 0.7
+      var dismissDuration      = 0.7
+      var dismissOnTap         = true
     }
     
-    public struct Highlighting {
-      public var showsOverlay         = false
-      public var overlayColor         = UIColor.black.withAlphaComponent(0.7)
-      public var overlayShape         = Shape.rect(rectMargin: 0)
-      public var shouldDismissOnOverlayTap = false
-      public var shouldPassEventToHighlightView = true
+    struct Highlighting {
+      var showsOverlay         = false
+      var overlayColor         = UIColor.black.withAlphaComponent(0.7)
+      var overlayShape         = Shape.rect(rectMargin: 0)
+      var shouldDismissOnOverlayTap = false
+      var shouldPassEventToHighlightView = true
       
     }
     
-    public var drawing      = Drawing()
-    public var positioning  = Positioning()
-    public var animating    = Animating()
-    public var highlighting = Highlighting()
-    public var hasBorder : Bool {
+    var drawing      = Drawing()
+    var positioning  = Positioning()
+    var animating    = Animating()
+    var highlighting = Highlighting()
+    var hasBorder : Bool {
       return drawing.borderWidth > 0 && drawing.borderColor != UIColor.clear
     }
     
-    public var hasShadow : Bool {
+    var hasShadow : Bool {
       return drawing.shadowOpacity > 0 && drawing.shadowColor != UIColor.clear
     }
     
-    public init() {}
+    init() {}
   }
   
-  public enum Content: CustomStringConvertible {
+  enum Content: CustomStringConvertible {
     
     case text(String)
     case attributedText(NSAttributedString)
     case view(UIView)
     
-    public var description: String {
+    var description: String {
       switch self {
       case .text(let text):
         return "text : '\(text)'"
@@ -334,7 +334,7 @@ open class EasyTipView: UIView {
   
   // MARK:- Variables -
   
-  override open var backgroundColor: UIColor? {
+  override var backgroundColor: UIColor? {
     didSet {
       guard let color = backgroundColor
             , color != UIColor.clear else {return}
@@ -344,7 +344,7 @@ open class EasyTipView: UIView {
     }
   }
   
-  override open var description: String {
+  override var description: String {
     let type = "'\(String(reflecting: Swift.type(of: self)))'".components(separatedBy: ".").last!
     
     return "<< \(type) with \(content) >>"
@@ -353,7 +353,7 @@ open class EasyTipView: UIView {
   fileprivate weak var presentingView: UIView?
   fileprivate weak var delegate: EasyTipViewDelegate?
   fileprivate var arrowTip = CGPoint.zero
-  fileprivate(set) open var preferences: Preferences
+  fileprivate(set) var preferences: Preferences
   private let content: Content
   
   fileprivate lazy var overlay: TipViewHighlightingBackground = {
@@ -423,11 +423,11 @@ open class EasyTipView: UIView {
   
   // MARK: - Static variables -
   
-  public static var globalPreferences = Preferences()
+  static var globalPreferences = Preferences()
   
   // MARK:- Initializer -
   
-  public convenience init (text: String, preferences: Preferences = EasyTipView.globalPreferences, delegate: EasyTipViewDelegate? = nil) {
+  convenience init (text: String, preferences: Preferences = EasyTipView.globalPreferences, delegate: EasyTipViewDelegate? = nil) {
     self.init(content: .text(text), preferences: preferences, delegate: delegate)
     
     self.isAccessibilityElement = true
@@ -435,15 +435,15 @@ open class EasyTipView: UIView {
     self.accessibilityLabel = text
   }
   
-  public convenience init (contentView: UIView, preferences: Preferences = EasyTipView.globalPreferences, delegate: EasyTipViewDelegate? = nil) {
+  convenience init (contentView: UIView, preferences: Preferences = EasyTipView.globalPreferences, delegate: EasyTipViewDelegate? = nil) {
     self.init(content: .view(contentView), preferences: preferences, delegate: delegate)
   }
   
-  public convenience init (text: NSAttributedString, preferences: Preferences = EasyTipView.globalPreferences, delegate: EasyTipViewDelegate? = nil) {
+  convenience init (text: NSAttributedString, preferences: Preferences = EasyTipView.globalPreferences, delegate: EasyTipViewDelegate? = nil) {
     self.init(content: .attributedText(text), preferences: preferences, delegate: delegate)
   }
   
-  public init (content: Content, preferences: Preferences = EasyTipView.globalPreferences, delegate: EasyTipViewDelegate? = nil) {
+  init (content: Content, preferences: Preferences = EasyTipView.globalPreferences, delegate: EasyTipViewDelegate? = nil) {
     
     self.content = content
     self.preferences = preferences
@@ -470,7 +470,7 @@ open class EasyTipView: UIView {
   /**
    NSCoding not supported. Use init(text, preferences, delegate) instead!
    */
-  required public init?(coder aDecoder: NSCoder) {
+  required init?(coder aDecoder: NSCoder) {
     fatalError("NSCoding not supported. Use init(text, preferences, delegate) instead!")
   }
   
@@ -702,11 +702,11 @@ open class EasyTipView: UIView {
         endPoint = CGPoint(x: 0, y: bounds.height)
       }
       context.drawLinearGradient(
-              gradient,
-              start: startPoint,
-              end: endPoint,
-              options: []
-          )
+        gradient,
+        start: startPoint,
+        end: endPoint,
+        options: []
+      )
     }
     
   }
@@ -758,7 +758,7 @@ open class EasyTipView: UIView {
     }
   }
   
-  override open func draw(_ rect: CGRect) {
+  override func draw(_ rect: CGRect) {
     
     let bubbleFrame = getBubbleFrame()
     
