@@ -46,7 +46,7 @@ open class HighlightFeature {
       public var backgroundColor                 = HighlightBackground.solid(UIColor.systemRed)
       public var subtext                         = ""
       public var actionText                      = ""
-      public var icon: UIImage?                  = nil
+      public var image: UIImage?                 = nil
       public var maxWidth                        = CGFloat(200)
       public var textColor                       = UIColor.white
       public var shouldDismissOnDialogTap        = true
@@ -87,6 +87,7 @@ open class HighlightFeature {
     
     preferences.animating.dismissOnTap =
       highlightPreferences.data.shouldDismissOnDialogTap
+    preferences.drawing.image = highlightPreferences.data.image
   }
   
   private func arrowPositionSetup() {

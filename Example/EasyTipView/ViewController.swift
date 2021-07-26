@@ -89,6 +89,7 @@ class ViewController: UIViewController {
       preferences.overlay.overlayIsVisible = true
       preferences.overlay.overlayShape = .circle()
       preferences.data.title = "Tip view within the green superview. Tap to dismiss."
+      preferences.data.image = UIImage(named: "outline_account_circle_black_36pt")
       let view = HighlightFeature(preferences: preferences)
       view.show(forView: buttonA)
       
