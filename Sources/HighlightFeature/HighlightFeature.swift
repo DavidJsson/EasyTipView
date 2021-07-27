@@ -47,7 +47,9 @@ open class HighlightFeature {
       public var subtext                         = ""
       public var actionText                      = ""
       public var image: UIImage?                 = nil
-      public var maxWidth                        = CGFloat(200)
+      public var widthRatio: CGFloat?            = nil
+      public var minWidthRatio: CGFloat?         = nil
+      public var maxWidthRatio: CGFloat?         = nil
       public var textColor                       = UIColor.white
       public var shouldDismissOnDialogTap        = true
       public var shouldDismissWhenTapOutside     = false
@@ -84,6 +86,7 @@ open class HighlightFeature {
     arrowPositionSetup()
     backgroundColorSetup()
     overlaySetup()
+    widthSetup()
     
     preferences.animating.dismissOnTap =
       highlightPreferences.data.shouldDismissOnDialogTap
@@ -134,5 +137,17 @@ open class HighlightFeature {
       highlightPreferences.overlay.shouldDismissOnOverlayTap
     preferences.highlighting.shouldPassEventToHighlightView =
       highlightPreferences.overlay.shouldPassEventToHighlightView
+  }
+  
+  private func widthSetup() {
+    preferences.positioning.widthRatio = highlightPreferences.data.widthRatio
+    
+    if let maxWidthRatio = highlightPreferences.data.maxWidthRatio {
+      preferences.positioning.maxWidthRatio = maxWidthRatio
+    }
+    
+    if let minWidthRatio = highlightPreferences.data.minWidthRatio {
+      preferences.positioning.minWidthRatio = minWidthRatio
+    }
   }
 }

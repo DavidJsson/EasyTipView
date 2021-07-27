@@ -272,10 +272,13 @@ class EasyTipView: UIView {
     }
     
     struct Positioning {
-      var bubbleInsets         = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
-      var contentInsets        = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
-      var widthRatio           = CGFloat(0.7)
-      var imageSpace           = CGFloat(8)
+      var bubbleInsets            = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
+      var contentInsets           = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
+      var widthRatio: CGFloat?    = nil
+      var maxWidthRatio           = CGFloat(1)
+      var minWidthRatio           = CGFloat(0)
+      var maxWidth: CGFloat?      = nil
+      var imageSpace              = CGFloat(8)
     }
     
     struct Animating {
@@ -374,9 +377,30 @@ class EasyTipView: UIView {
   fileprivate lazy var contentSize: CGSize = {
     
     [unowned self] in
-    var screenWidth: CGFloat = computeRatioWidth()
+    
+    let minWidth = computeRatioWidth(with: preferences.positioning.minWidthRatio)
+    let maxWidth: CGFloat
+    
+    if let widthRatio = preferences.positioning.widthRatio {
+      maxWidth = computeRatioWidth(with: widthRatio)
+    } else if let width = preferences.positioning.maxWidth {
+      maxWidth = width
+    } else {
+      maxWidth = computeRatioWidth(with: preferences.positioning.maxWidthRatio)
+    }
+    
+    let spaces = self.imageSize.width + self.preferences.positioning.imageSpace + self.preferences.positioning.contentInsets.left + self.preferences.positioning.contentInsets.right + self.preferences.positioning.bubbleInsets.left + self.preferences.positioning.bubbleInsets.right
+
+    let textWidth = maxWidth - spaces
+    let minTextWidth = minWidth - spaces
+    
+    var textSize: CGSize
     
     switch content {
+    
+    case .view(let contentView):
+      return contentView.frame.size
+    
     case .text(let text):
       #if swift(>=4.2)
       var attributes = [NSAttributedString.Key.font : self.preferences.drawing.font]
@@ -384,38 +408,31 @@ class EasyTipView: UIView {
       var attributes = [NSAttributedStringKey.font : self.preferences.drawing.font]
       #endif
       
-      var textSize = text.boundingRect(with: CGSize(width: screenWidth, height: CGFloat.greatestFiniteMagnitude), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: attributes, context: nil).size
-      
-      textSize.width = ceil(textSize.width)
-      textSize.height = ceil(textSize.height)
-      
-      if textSize.width < self.preferences.drawing.arrowWidth {
-        textSize.width = self.preferences.drawing.arrowWidth
-      }
-      if textSize.height < imageSize.height {
-        textSize.height = imageSize.height
-      }
-      
-      return textSize
+      textSize = text.boundingRect(with: CGSize(width: textWidth, height: CGFloat.greatestFiniteMagnitude), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: attributes, context: nil).size
       
     case .attributedText(let text):
-      var textSize = text.boundingRect(with: CGSize(width: screenWidth, height: CGFloat.greatestFiniteMagnitude), options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil).size
-      
-      textSize.width = ceil(textSize.width)
-      textSize.height = ceil(textSize.height)
-      
-      if textSize.width < self.preferences.drawing.arrowWidth {
-        textSize.width = self.preferences.drawing.arrowWidth
-      }
-      if textSize.height < imageSize.height {
-        textSize.height = imageSize.height
-      }
-      
-      return textSize
-      
-    case .view(let contentView):
-      return contentView.frame.size
+      textSize = text.boundingRect(with: CGSize(width: textWidth, height: CGFloat.greatestFiniteMagnitude), options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil).size
+
     }
+    
+    textSize.width = ceil(textSize.width)
+    textSize.height = ceil(textSize.height)
+    
+    
+    if preferences.positioning.widthRatio != nil {
+      textSize.width = textWidth
+    } else if (textSize.width < minTextWidth) {
+      textSize.width = minTextWidth
+    } else if textSize.width < self.preferences.drawing.arrowWidth {
+      textSize.width = self.preferences.drawing.arrowWidth
+    }
+    
+    if textSize.height < imageSize.height {
+      textSize.height = imageSize.height
+    }
+    
+    return textSize
+    
   }()
   
   fileprivate lazy var imageSize: CGSize = {
@@ -516,14 +533,14 @@ class EasyTipView: UIView {
   
   // MARK: - Private methods -
   
-  fileprivate func computeRatioWidth() -> CGFloat {
-    var ratio: CGFloat
-    switch preferences.positioning.widthRatio {
-    case ...0: ratio = 0.01
-    case 1...: ratio = 0.945
-    default: ratio = preferences.positioning.widthRatio
+  fileprivate func computeRatioWidth(with ratio: CGFloat) -> CGFloat {
+    var constrainedRatio: CGFloat
+    switch ratio {
+    case ...0: constrainedRatio = 0
+    case 1...: constrainedRatio = 1
+    default: constrainedRatio = ratio
     }
-    return UIScreen.main.bounds.width * ratio
+    return UIScreen.main.bounds.width * constrainedRatio
   }
   
   fileprivate func computeFrame(arrowPosition position: ArrowPosition, refViewFrame: CGRect, superviewFrame: CGRect) -> CGRect {
