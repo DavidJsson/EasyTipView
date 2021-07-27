@@ -70,7 +70,7 @@ open class HighlightFeature {
         var text = "<div style='text-align:Center; color: white'>"
         if title != "" { text +=  "<h2 style='font:\(titleFont); margin:0'>\(title)</h2>"}
         if subtext != "" { text +=  "<p style='font:\(subtextFont); margin:0'>\(subtext)</p>"}
-        if title != "" { text +=  "<small style='font:\(actionTextFont); margin: 5 0 0 0'>(\(actionText))</small>"}
+        if actionText != "" { text +=  "<small style='font:\(actionTextFont); margin: 5 0 0 0'>(\(actionText))</small>"}
         text += "</div>"
         let htmlData = NSString(string: text).data(using: String.Encoding.utf8.rawValue)
         let options = [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html]
