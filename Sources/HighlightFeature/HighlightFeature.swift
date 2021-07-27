@@ -41,22 +41,42 @@ open class HighlightFeature {
     }
     
     public struct HighlightData {
-      public var title                           = ""
       public var position                        = HighlightAlignment.any
       public var backgroundColor                 = HighlightBackground.solid(UIColor.systemRed)
-      public var subtext                         = ""
-      public var actionText                      = ""
       public var image: UIImage?                 = nil
       public var widthRatio: CGFloat?            = nil
       public var minWidthRatio: CGFloat?         = nil
       public var maxWidthRatio: CGFloat?         = nil
-      public var textColor                       = UIColor.white
       public var shouldDismissOnDialogTap        = true
       public var shouldDismissWhenTapOutside     = false
     }
     
+    public struct HighlightText {
+      public var title: String = ""
+      public var subtext: String = ""
+      public var actionText: String = ""
+      public var titleFont: UIFont = UIFont.systemFont(ofSize: 15)
+      public var subtextFont: UIFont = UIFont.systemFont(ofSize: 10)
+      public var actionTextFont: UIFont = UIFont.systemFont(ofSize: 8)
+      public var textColor: UIColor = UIColor.white
+      
+      func toAttributedText() -> NSAttributedString {
+        var text = "<div style='text-align:Center; color: white'>"
+        if title != "" { text +=  "<h2 style='font:\(titleFont); margin:0'>\(title)</h2>"}
+        if subtext != "" { text +=  "<p style='font:\(subtextFont); margin:0'>\(subtext)</p>"}
+        if title != "" { text +=  "<small style='font:\(actionTextFont); margin: 5 0 0 0'>\(actionText)</small>"}
+        text += "</div>"
+        let htmlData = NSString(string: text).data(using: String.Encoding.utf8.rawValue)
+        let options = [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html]
+        let attributedString = try! NSMutableAttributedString(data: htmlData!, options: options, documentAttributes: nil)
+        attributedString.addAttributes([.foregroundColor: textColor], range: NSRange(location:0, length: attributedString.length-1))
+        return attributedString
+      }
+    }
+    
     public var data = HighlightData()
     public var overlay = HighlightOverlay()
+    public var text = HighlightText()
     
     public init() {}
   }
@@ -72,13 +92,13 @@ open class HighlightFeature {
   
   public func show(forItem item: UIBarItem) {
     EasyTipView.show(forItem: item,
-                     text: highlightPreferences.data.title,
+                     text: highlightPreferences.text.title,
                      preferences: preferences)
   }
   
   public func show(forView view: UIView) {
     EasyTipView.show(forView: view,
-                     text: highlightPreferences.data.title,
+                     attributedText: highlightPreferences.text.toAttributedText(),
                      preferences: preferences)
   }
   

@@ -52,7 +52,7 @@ class ViewController: UIViewController {
   @IBAction func barButtonAction(sender: UIBarButtonItem) {
     let text = "Tip view for bar button item displayed within the navigation controller's view. Tap to dismiss."
     var prefs = HighlightFeature.HighlightPreferences()
-    prefs.data.title = text
+    prefs.text.title = text
     HighlightFeature(preferences: prefs).show(forItem: self.navBarItem)
   }
   
@@ -60,7 +60,7 @@ class ViewController: UIViewController {
       
     var preferences = HighlightFeature.HighlightPreferences()
     let text = "EasyTipView is an easy to use tooltip view. It can point to any UIView or UIBarItem subclasses. Tap the buttons to see other"
-    preferences.data.title = text
+    preferences.text.title = text
     
     let tip = HighlightFeature(preferences: preferences)
     tip.show(forItem: toolbarItem)
@@ -85,10 +85,10 @@ class ViewController: UIViewController {
       }
       
       preferences.data.backgroundColor = .gradient(gradient: gradient, direction: .leftRight)
-      preferences.data.textColor = UIColor.darkGray
+      preferences.text.textColor = UIColor.darkGray
       preferences.overlay.overlayIsVisible = true
       preferences.overlay.overlayShape = .circle()
-      preferences.data.title = "Tip view within the green superview. Tap to dismiss."
+      preferences.text.title = "Tip view within the green superview. Tap to dismiss."
       preferences.data.image = UIImage(named: "outline_account_circle_black_36pt")
       let view = HighlightFeature(preferences: preferences)
       view.show(forView: buttonA)
@@ -96,19 +96,23 @@ class ViewController: UIViewController {
     case buttonB:
       
       var preferences = HighlightFeature.HighlightPreferences()
-      preferences.data.textColor = .white
+      preferences.text.textColor = .white
       preferences.data.position = .top
       preferences.overlay.overlayIsVisible = true
       
-      let text = "Tip view inside the navigation controller's view. Tap to dismiss!"
-      preferences.data.title = text
+      let title = "This is a title"
+      let subtext = "We have some nice tomatoes in the garden, you want some?"
+      let actionText = "Tap to pick"
+      preferences.text.title = title
+      preferences.text.actionText = actionText
+      preferences.text.subtext = subtext
       HighlightFeature(preferences: preferences).show(forView: self.buttonB)
       
     default:
       
       var preferences = HighlightFeature.HighlightPreferences()
       preferences.data.backgroundColor = .solid(buttonH.backgroundColor!)
-      preferences.data.textColor = .white
+      preferences.text.textColor = .white
       preferences.data.position = .top
       //preferences.positioning.bubbleInsets = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 4)
       preferences.overlay.overlayIsVisible = true
@@ -117,7 +121,8 @@ class ViewController: UIViewController {
       
       preferences.overlay.shouldPassEventToHighlightView = true
       preferences.overlay.shouldDismissOnOverlayTap = false
-      preferences.data.title = "Tip view with highlighting overlay"
+      preferences.text.title = "New stuff!"
+      preferences.text.subtext = "Tip view with highlighting overlay"
       let view = HighlightFeature(preferences: preferences)
       view.show(forView: buttonH)
       
