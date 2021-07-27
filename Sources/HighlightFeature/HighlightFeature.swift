@@ -51,6 +51,12 @@ open class HighlightFeature {
       public var shouldDismissWhenTapOutside     = false
     }
     
+    public struct HighlightPadding {
+      public var contentPadding: UIEdgeInsets    = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
+      public var dialogPadding: UIEdgeInsets     = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
+      public var imageSpace: CGFloat             = CGFloat(8)
+    }
+    
     public struct HighlightText {
       public var title: String = ""
       public var subtext: String = ""
@@ -64,7 +70,7 @@ open class HighlightFeature {
         var text = "<div style='text-align:Center; color: white'>"
         if title != "" { text +=  "<h2 style='font:\(titleFont); margin:0'>\(title)</h2>"}
         if subtext != "" { text +=  "<p style='font:\(subtextFont); margin:0'>\(subtext)</p>"}
-        if title != "" { text +=  "<small style='font:\(actionTextFont); margin: 5 0 0 0'>\(actionText)</small>"}
+        if title != "" { text +=  "<small style='font:\(actionTextFont); margin: 5 0 0 0'>(\(actionText))</small>"}
         text += "</div>"
         let htmlData = NSString(string: text).data(using: String.Encoding.utf8.rawValue)
         let options = [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html]
@@ -77,6 +83,7 @@ open class HighlightFeature {
     public var data = HighlightData()
     public var overlay = HighlightOverlay()
     public var text = HighlightText()
+    public var padding = HighlightPadding()
     
     public init() {}
   }
@@ -107,6 +114,7 @@ open class HighlightFeature {
     backgroundColorSetup()
     overlaySetup()
     widthSetup()
+    paddingSetup()
     
     preferences.animating.dismissOnTap =
       highlightPreferences.data.shouldDismissOnDialogTap
@@ -144,6 +152,12 @@ open class HighlightFeature {
       backgroundColor = .solid(color)
     }
     preferences.drawing.backgroundColor = backgroundColor
+  }
+  
+  private func paddingSetup() {
+    preferences.positioning.bubbleInsets  = highlightPreferences.padding.dialogPadding
+    preferences.positioning.contentInsets = highlightPreferences.padding.contentPadding
+    preferences.positioning.imageSpace    =  highlightPreferences.padding.imageSpace
   }
   
   private func overlaySetup() {
