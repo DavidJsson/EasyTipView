@@ -52,7 +52,8 @@ class ViewController: UIViewController {
   @IBAction func barButtonAction(sender: UIBarButtonItem) {
     let text = "Tip view for bar button item displayed within the navigation controller's view. Tap to dismiss."
     var prefs = HighlightFeature.HighlightPreferences()
-    prefs.text.title = text
+    prefs.text.title = "Bar button item"
+    prefs.text.subtext = "Displayed for a bar button item! Sweet monies"
     HighlightFeature(preferences: prefs).show(forItem: self.navBarItem)
   }
   
@@ -60,7 +61,8 @@ class ViewController: UIViewController {
       
     var preferences = HighlightFeature.HighlightPreferences()
     let text = "EasyTipView is an easy to use tooltip view. It can point to any UIView or UIBarItem subclasses. Tap the buttons to see other"
-    preferences.text.title = text
+    preferences.text.subtext = text
+    preferences.text.title = "Easy to use!"
     
     let tip = HighlightFeature(preferences: preferences)
     tip.show(forItem: toolbarItem)

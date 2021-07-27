@@ -92,7 +92,7 @@ open class HighlightFeature {
   
   public func show(forItem item: UIBarItem) {
     EasyTipView.show(forItem: item,
-                     text: highlightPreferences.text.title,
+                     attributedText: highlightPreferences.text.toAttributedText(),
                      preferences: preferences)
   }
   

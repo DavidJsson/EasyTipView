@@ -117,6 +117,22 @@ extension EasyTipView {
     ev.show(animated: animated, forView: view, withinSuperview: superview)
   }
   
+  /**
+   Presents an EasyTipView pointing to a particular UIBarItem instance within the specified superview containing attributed text.
+   - parameter animated:       Pass true to animate the presentation.
+   - parameter item:        The UIBarButtonItem or UITabBarItem instance which the EasyTipView will be pointing to.
+   - parameter superview:      A view which is part of the UIView instances superview hierarchy. Ignore this parameter in order to display the EasyTipView within the main window.
+   - parameter attributedText: The attributed text to be displayed.
+   - parameter preferences:    The preferences which will configure the EasyTipView.
+   - parameter delegate:       The delegate.
+   */
+  class func show(animated: Bool = true, forItem item: UIBarItem, withinSuperview superview: UIView? = nil, attributedText:  NSAttributedString, preferences: Preferences = EasyTipView.globalPreferences, delegate: EasyTipViewDelegate? = nil){
+    
+    if let view = item.view {
+      show(animated: animated, forView: view, withinSuperview: superview, attributedText: attributedText, preferences: preferences, delegate: delegate)
+    }
+  }
+  
   // MARK:- Instance methods -
   
   /**
